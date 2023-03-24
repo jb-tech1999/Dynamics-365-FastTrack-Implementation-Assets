@@ -1,0 +1,9 @@
+{
+	"name": "testingadf-jandre",
+	"location": "southafricanorth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f57f4495-d8ae-4571-a713-23f1566b2eb8",
+		"tenantId": "5a1fa81f-80d5-48d7-a373-fe208cc325b9"
+	}
+}
