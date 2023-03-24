@@ -42,8 +42,17 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "TestDB",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
-					"scripts": [],
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT * FROM DDIC"
+						}
+					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
