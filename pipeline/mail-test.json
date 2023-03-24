@@ -1,0 +1,64 @@
+{
+	"name": "mail-test",
+	"properties": {
+		"activities": [
+			{
+				"name": "SendFail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "UpdateStatus",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-09.southafricanorth.logic.azure.com:443/workflows/a050d80bf26c4e19be23b6e385a1d93d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sixScIUMyWNTqOzd7Fz4unpjxBV81k7GTpmoXmYw2tA",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"message\": \"@{activity('UpdateStatus').error.Message}\",\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\",\n    \"receiver\" : \"@{pipeline().parameters.receiver}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "UpdateStatus",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"scripts": [],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"receiver": {
+				"type": "string",
+				"defaultValue": "Jandre.Badenhorst@OMNIA.CO.ZA"
+			}
+		},
+		"folder": {
+			"name": "POC"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-09T11:31:31Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}
