@@ -151,16 +151,19 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "TestDB",
+					"referenceName": "TestDB2",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [],
-				"typeProperties": {}
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "logs"
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/TestDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/TestDB2')]"
 			]
 		},
 		{
@@ -220,251 +223,213 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/petrolcdc')]",
-			"type": "Microsoft.DataFactory/factories/adfcdcs",
+			"name": "[concat(parameters('factoryName'), '/CSV-to-SQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"SourceConnectionsInfo": [
+				"activities": [
 					{
-						"SourceEntities": [
-							{
-								"name": "petrol",
-								"properties": {
-									"schema": [],
-									"dslConnectorProperties": [
-										{
-											"name": "container",
-											"value": "petrol"
-										},
-										{
-											"name": "fileSystem",
-											"value": "petrol"
-										}
-									]
-								}
-							}
-						],
-						"Connection": {
-							"linkedService": {
-								"referenceName": "logs",
-								"type": "LinkedServiceReference"
-							},
-							"linkedServiceType": "AzureBlobStorage",
-							"type": "linkedservicetype",
-							"isInlineDataset": true,
-							"commonDslConnectorProperties": [
-								{
-									"name": "allowSchemaDrift",
-									"value": true
-								},
-								{
-									"name": "inferDriftedColumnTypes",
-									"value": true
-								},
-								{
-									"name": "format",
-									"value": "delimited"
-								},
-								{
-									"name": "dateFormats",
-									"value": [
-										"MM/dd/yyyy",
-										"dd/MM/yyyy",
-										"yyyy/MM/dd",
-										"MM-dd-yyyy",
-										"dd-MM-yyyy",
-										"yyyy-MM-dd",
-										"dd.MM.yyyy",
-										"MM.dd.yyyy",
-										"yyyy.MM.dd"
-									]
-								},
-								{
-									"name": "timestampFormats",
-									"value": [
-										"yyyyMMddHHmm",
-										"yyyyMMdd HHmm",
-										"yyyyMMddHHmmss",
-										"yyyyMMdd HHmmss",
-										"dd-MM-yyyy HH:mm:ss",
-										"dd-MM-yyyy HH:mm",
-										"yyyy-M-d H:m:s",
-										"yyyy-MM-dd\\'T\\'HH:mm:ss\\'Z\\'",
-										"yyyy-M-d\\'T\\'H:m:s\\'Z\\'",
-										"yyyy-M-d\\'T\\'H:m:s",
-										"yyyy-MM-dd\\'T\\'HH:mm:ss",
-										"yyyy-MM-dd HH:mm:ss",
-										"yyyy-MM-dd HH:mm",
-										"yyyy.MM.dd HH:mm:ss",
-										"MM/dd/yyyy HH:mm:ss",
-										"M/d/yyyy H:m:s",
-										"yyyy/MM/dd HH:mm:ss",
-										"yyyy/M/d H:m:s",
-										"dd MMM yyyy HH:mm:ss",
-										"dd MMMM yyyy HH:mm:ss",
-										"d MMM yyyy H:m:s",
-										"d MMMM yyyy H:m:s",
-										"d-M-yyyy H:m:s",
-										"d-M-yyyy H:m",
-										"yyyy-M-d H:m",
-										"MM/dd/yyyy HH:mm",
-										"M/d/yyyy H:m",
-										"yyyy/MM/dd HH:mm",
-										"yyyy/M/d H:m",
-										"dd MMMM yyyy HH:mm",
-										"dd MMM yyyy HH:mm",
-										"d MMMM yyyy H:m",
-										"d MMM yyyy H:m",
-										"MM-dd-yyyy hh:mm:ss a",
-										"MM-dd-yyyy HH:mm:ss",
-										"MM/dd/yyyy hh:mm:ss a",
-										"yyyy.MM.dd hh:mm:ss a",
-										"MM/dd/yyyy",
-										"dd/MM/yyyy",
-										"yyyy/MM/dd",
-										"MM-dd-yyyy",
-										"dd-MM-yyyy",
-										"yyyy-MM-dd",
-										"dd.MM.yyyy",
-										"MM.dd.yyyy",
-										"yyyy.MM.dd"
-									]
-								},
-								{
-									"name": "enableCdc",
-									"value": true
-								},
-								{
-									"name": "skipInitialLoad",
-									"value": true
-								},
-								{
-									"name": "columnNamesAsHeader",
-									"value": true
-								},
-								{
-									"name": "columnDelimiter",
-									"value": ","
-								},
-								{
-									"name": "escapeChar",
-									"value": "\\\\"
-								},
-								{
-									"name": "quoteChar",
-									"value": "\\\""
-								}
-							]
-						}
-					}
-				],
-				"TargetConnectionsInfo": [
-					{
-						"TargetEntities": [
-							{
-								"name": "dbo.petrol",
-								"properties": {
-									"schema": [],
-									"dslConnectorProperties": [
-										{
-											"name": "schemaName",
-											"value": "dbo"
-										},
-										{
-											"name": "tableName",
-											"value": "petrol"
-										}
-									]
-								}
-							}
-						],
-						"Connection": {
-							"linkedService": {
-								"referenceName": "TestDB2",
-								"type": "LinkedServiceReference"
-							},
-							"linkedServiceType": "AzureSqlDatabase",
-							"type": "linkedservicetype",
-							"isInlineDataset": true,
-							"commonDslConnectorProperties": [
-								{
-									"name": "allowSchemaDrift",
-									"value": true
-								},
-								{
-									"name": "inferDriftedColumnTypes",
-									"value": true
-								},
-								{
-									"name": "format",
-									"value": "table"
-								},
-								{
-									"name": "store",
-									"value": "sqlserver"
-								},
-								{
-									"name": "databaseType",
-									"value": "databaseType"
-								},
-								{
-									"name": "database",
-									"value": "database"
-								},
-								{
-									"name": "deletable",
-									"value": false
-								},
-								{
-									"name": "insertable",
-									"value": true
-								},
-								{
-									"name": "updateable",
-									"value": false
-								},
-								{
-									"name": "upsertable",
-									"value": false
-								},
-								{
-									"name": "skipDuplicateMapInputs",
-									"value": true
-								},
-								{
-									"name": "skipDuplicateMapOutputs",
-									"value": true
-								}
-							]
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"DataMapperMappings": [
-							{
-								"targetEntityName": "dbo.petrol",
-								"sourceEntityName": "petrol",
-								"sourceConnectionReference": {
-									"connectionName": "logs",
-									"type": "linkedservicetype"
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "dateinserted",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
 								},
-								"attributeMappingInfo": {
-									"attributeMappings": []
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "upsert",
+								"upsertSettings": {
+									"useTempDB": false,
+									"keys": [
+										"date",
+										"odometer"
+									]
+								},
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "logid",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "logid",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "distance",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "distance",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "garage",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "garage",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "odometer",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "odometer",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "user_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "user_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "carRegistration",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "carRegistration",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "litersPurchase",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "litersPurchase",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "totalcost",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "totalcost",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "dateinserted",
+											"type": "String"
+										},
+										"sink": {
+											"name": "dateinserted",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
 								}
 							}
+						},
+						"inputs": [
+							{
+								"referenceName": "logs",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
 						],
-						"Relationships": []
+						"outputs": [
+							{
+								"referenceName": "TestTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
-				"Policy": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 15
-					},
-					"mode": "Microbatch"
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
 				},
-				"allowVNetOverride": false
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/logs')]",
-				"[concat(variables('factoryId'), '/linkedServices/TestDB2')]"
+				"[concat(variables('factoryId'), '/datasets/logs')]",
+				"[concat(variables('factoryId'), '/datasets/TestTable')]"
 			]
 		},
 		{
